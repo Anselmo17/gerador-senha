@@ -3,22 +3,37 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import useStorage from '../../hooks/userStorage';
+import { PasswordItem } from '../password/components/passwordItem';
 
 export function Password() {
     const [passwords, setPasswords] = useState([]);
     const focused = useIsFocused();
-    const { getItem } = useStorage();
+    const { getItem, removeItem } = useStorage();
 
     useEffect(() => {
 
         async function loadPassword() {
             const passwordsCurrent = await getItem('Gpass');
-            console.log('----- retorno dados ---------', passwordsCurrent);
             setPasswords(passwordsCurrent);
         }
 
         loadPassword();
     }, [focused]);
+
+
+    async function handlePasswordDelete(item) {
+        const result = await removeItem('Gpass', item);
+        alert('Item deletado com sucesso');
+        setPasswords(result);
+    }
+
+    const EmptyListMessage = () => {
+        return (
+          <Text>
+            Lista Vazia
+          </Text>
+        );
+      };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -28,10 +43,10 @@ export function Password() {
 
             <View style={styles.content}>
                 <FlatList
-                style={{flex:1, paddingTop:14}}
-                data={passwords}
-                keyExtractor={({item})=>String(item)}
-                renderItem={({item})=><Text>{item}</Text>}
+                    ListEmptyComponent={EmptyListMessage}
+                    style={{ flex: 1, paddingTop: 14 }}
+                    data={passwords}     
+                    renderItem={({ item }) => <PasswordItem data={item} remove={() => handlePasswordDelete(item)} />}
                 />
             </View>
         </SafeAreaView>
@@ -51,8 +66,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold'
     },
-    content:{
-        flex:1,
+    content: {
+        flex: 1,
         paddingLeft: 14,
         paddingRight: 14,
     }
