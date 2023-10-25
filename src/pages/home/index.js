@@ -21,7 +21,6 @@ export function Home() {
     }
     setPasswordValue(password)
     setModal(true);
-    console.log('---------------------', passwordValue);
   }
 
   return (

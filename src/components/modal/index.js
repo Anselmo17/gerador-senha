@@ -1,21 +1,24 @@
 import { View, Text, StyleSheet, TouchableOpacity, Pressable } from "react-native";
 import * as Clipboard from 'expo-clipboard';
+import userStorage from '../../hooks/userStorage';
+
+export function ModalPassword({ password, handleClose }) {
+    const { getItem, removeItem, saveItem } = userStorage();
 
 
-export function ModalPassword({password, handleClose}) {
-
-async function handleCopyPassword(){
-   await Clipboard.setStringAsync(password);
-   alert('Senha salva com sucesso!!!');
-   handleClose();
-}
+    async function handleCopyPassword() {
+        await Clipboard.setStringAsync(password);
+        await saveItem('Gpass', password);
+        alert('Senha salva com sucesso!!!');
+        handleClose();
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.title} >Senha Gerada</Text>
                 <Pressable style={styles.innerPassword} onLongPress={handleCopyPassword}>
-                    <Text  style={styles.text}>{password}</Text>
+                    <Text style={styles.text}>{password}</Text>
                 </Pressable>
 
                 <View style={styles.btnArea}>
@@ -23,7 +26,9 @@ async function handleCopyPassword(){
                         <Text style={styles.btnTxt}>Voltar</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{...styles.btn, ...styles.btnSave}}>
+                    <TouchableOpacity 
+                       style={{ ...styles.btn, ...styles.btnSave }} 
+                       onPress={handleCopyPassword}>
                         <Text style={styles.btnSaveTxt}>Salvar senha</Text>
                     </TouchableOpacity>
                 </View>
@@ -76,11 +81,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 8,
         marginBottom: 14,
-        padding:8
+        padding: 8
     },
     btnSaveTxt: {
         color: '#fff',
-        fontWeight:'bold'
+        fontWeight: 'bold'
     },
     btnSave: {
         backgroundColor: '#392DE9',
