@@ -2,7 +2,7 @@
   "expo": {
     "name": "gerador",
     "slug": "gerador",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,13 +18,20 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode":2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ansdev.gerador"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "15ec253a-76c2-46f8-9d9d-5ba3d2c92163"
+      }
     }
   }
 }
